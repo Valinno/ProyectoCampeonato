@@ -12,16 +12,16 @@ import javax.swing.JOptionPane;
  */
 public class ArregloAscendente {
     public static void main(String[] args) {
-        Integer[] Codigos=new Integer[10];
+        Integer[] Codigos=new Integer[20];
         Integer auxiliar;
         
         for (int i = 0; i < Codigos.length; i++) {
             Codigos[i]=Integer.valueOf(JOptionPane.showInputDialog("Introduzca el codigo " + i + ": "));
         }
         
-        for (int i = 0; i < Codigos.length-1; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (Codigos[i] <= Codigos[j]) {
+        for (int i = 0; i < Codigos.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if ((Codigos[i] <= Codigos[j]) && Codigos[j] != 0) {
                     auxiliar = Codigos[i];
                     Codigos[i] = Codigos[j];
                     Codigos[j] = auxiliar;
@@ -29,6 +29,7 @@ public class ArregloAscendente {
             }
         }
         
+        System.out.println("Lista de codigos: \n");
         for (int i=0; i<Codigos.length; i++) {
             System.out.println("" + Codigos[i]);
         }

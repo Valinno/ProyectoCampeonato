@@ -32,7 +32,11 @@ public class NumeroPerfecto {
         if (perfecto==true) {
             JOptionPane.showMessageDialog(null, "El numero " + x + " es un numero perfecto. La suma de sus multiplos da " + ContadorPerfecto + ".");
         } else {
-            JOptionPane.showMessageDialog(null, "El numero " + x + " NO es un numero perfecto. La suma de sus multiplos solamente da " + ContadorPerfecto + ".");
+            if (ContadorPerfecto==1) {
+                JOptionPane.showMessageDialog(null, "El numero " + x + " NO es un numero perfecto. La suma de sus multiplos solamente da " + ContadorPerfecto + ". Parece ser que este número es un número primo.");
+            } else {
+                JOptionPane.showMessageDialog(null, "El numero " + x + " NO es un numero perfecto. La suma de sus multiplos solamente da " + ContadorPerfecto + ".");
+            }
         }
     }
 }

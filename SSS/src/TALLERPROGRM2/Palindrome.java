@@ -4,25 +4,22 @@
  */
 package TALLERPROGRM2;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ALVARO
  */
 public class Palindrome {
-    public static void main(String[] args) throws IOException {
-        BufferedReader leer=new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
         String Palabra;
         ArrayList<Character> Normal=new ArrayList<>();
         ArrayList<Character> Reversa=new ArrayList<>();
         Integer posicion = 0;
         
-        System.out.println("Ingrese una palabra para analizar si es palindrome: ");
-        Palabra = leer.readLine();
+        
+        Palabra = JOptionPane.showInputDialog("Ingrese una palabra para analizar si es palindrome: ");
         
         for (int i = 0; i < Palabra.length(); i++) {
             Normal.add(Palabra.charAt(i));
@@ -30,9 +27,9 @@ public class Palindrome {
         }
         
         if (Reversa.equals(Normal)) {
-            System.out.println("La palabra " + Palabra + " es palindrome.");
+            JOptionPane.showMessageDialog(null, "La palabra " + Palabra + " es palindrome.");
         } else {
-            System.out.println("La palabra " + Palabra + " NO es palindrome. Evite utilizar mayusculas para una comparacion mas precisa.");
+            JOptionPane.showMessageDialog(null, "La palabra " + Palabra + " NO es palindrome. Evite utilizar mayusculas para una comparacion mas precisa.");
         }
         
     }

@@ -58,7 +58,7 @@ public class LectorCifras {
         } else if (ComaPunto>1) {
             System.out.println("Error. No debe introducir multiples puntos decimales en su numero. No se permiten comas.");
         }
-        System.out.println("Su numero contiene " + Cifras + " cifras totales, con " + CifrasDeci + " cifras decimales y " + (Cifras-CifrasDeci) + " cifras a la izquierda.  " + NumString.subSequence(0, 1));
+        System.out.println("Su numero contiene " + Cifras + " cifras totales, con " + CifrasDeci + " cifras decimales y " + (Cifras-CifrasDeci) + " cifras a la izquierda.  ");
         } catch (NumberFormatException e) {
             System.out.println("Error. Solo se permite una sola entrada numerica decimal o entera.");
         }
