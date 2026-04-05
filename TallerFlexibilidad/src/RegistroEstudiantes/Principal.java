@@ -18,11 +18,10 @@ public static void main(String[] args) {
     ArrayList<Registro> alumnos=new ArrayList<>();
     funcionesMenu displ=new funcionesMenu();
     int Respuesta;
-    
-    int op = 0;
     boolean activo = true;
-
+    
     do {
+        int op = 0;
         do {
             
             try {
@@ -35,7 +34,7 @@ public static void main(String[] args) {
             } catch (NumberFormatException e) {
             }
             
-        } while (op<=0 && op>6);
+        } while (op<=0 || op>6);
 
         switch(op) {
         case 1 -> displ.capturar_datos(alumnos);

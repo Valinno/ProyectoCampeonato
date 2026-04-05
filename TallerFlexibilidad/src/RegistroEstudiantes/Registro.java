@@ -21,7 +21,6 @@ public class Registro {
         private float NOTA3;
         private float PROM;
         
-        public Registro(){}
         
         public String getId() {
         return CODIGO;
