@@ -15,12 +15,23 @@ public class metodosScroll {
     
     private JScrollPane scrollPagina;
     
-     public JScrollPane crearScroll(String mostrar) {
+    public JScrollPane crearScroll(String mostrarDatos, int alto, int ancho) {
 
-        JTextArea text=new JTextArea(30, 90);
+        JTextArea text=new JTextArea(alto, ancho);
         this.scrollPagina=new JScrollPane(text);
         
-        text.setText(mostrar);
+        text.setText(mostrarDatos);
+        text.setEditable(false);
+        
+        return this.scrollPagina;
+    }
+    
+    public JScrollPane crearScroll(StringBuilder mostrarDatos, int alto, int ancho) {
+        
+        JTextArea text=new JTextArea(alto, ancho);
+        this.scrollPagina=new JScrollPane(text);
+        
+        text.setText(mostrarDatos.toString());
         text.setEditable(false);
         
         return this.scrollPagina;

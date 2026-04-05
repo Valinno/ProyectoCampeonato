@@ -40,7 +40,12 @@ public static void main(String[] args) {
         case 1 -> displ.capturar_datos(alumnos);
         case 2 -> displ.informe(alumnos);
         case 3 -> displ.consultar(alumnos);
-        case 4 -> displ.actualizar(alumnos);
+        case 4 -> {try {
+                displ.actualizar(alumnos);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Opción no válida. Será regresado al menú.", "Actualización de Datos", JOptionPane.WARNING_MESSAGE);
+            }
+}
         case 5 -> displ.borrar(alumnos);
         case 6 -> { 
             Respuesta = JOptionPane.showConfirmDialog(null, "¿Realmente desea salir del sistema?", "Confirmar", JOptionPane.YES_NO_OPTION);
