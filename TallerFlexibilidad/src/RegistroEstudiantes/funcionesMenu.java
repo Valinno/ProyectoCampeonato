@@ -18,7 +18,8 @@ import javax.swing.JTextArea;
 public class funcionesMenu {
 
     private int RespuestaGeneral;
-    
+    protected int contadorErrores;
+    protected ArrayList<String> mostrarCadena;
     
     // //////////// SOBRECARGADAS //////////////
     
@@ -33,116 +34,91 @@ public class funcionesMenu {
         return scroll;
     }
 
-    private JScrollPane crearScroll(String mostrar) {
-        
-        JTextArea text=new JTextArea(30, 90);
-        JScrollPane scroll=new JScrollPane(text);
-        
-        text.setText(mostrar);
-        text.setEditable(false);
-        
-        return scroll;
-    }
+   
  
     
-int busqueda(String a, ArrayList<Registro> alumnos) {
 
-        int guardar = -1;
-        
-        for (Registro x:alumnos) {
-            
-            if(a.equals(x.getId())) {
-                
-                guardar=alumnos.indexOf(x);
-                JOptionPane.showMessageDialog(null, "Estudiante encontrado en la posicion " + guardar);
-                
-            }
-            
-        }
-        return guardar;
-}
-
-String busqueda(int i, ArrayList<Registro> alumnos) {
-    
-    Registro x=new Registro();
-    x = alumnos.get(i);
-
-    return x.mostrar();
-}
 
     // //////////////////////////
     
-
+   private funcionesMenu ValidacionStrings(funcionesMenu objeto, String cadena, String tipoVariable, String Titulo) {
+    try {
+        if (cadena.isBlank()) {
+            objeto.mostrarCadena.add(tipoVariable);
+            objeto.contadorErrores++;
+        }
+    } catch (NullPointerException e) {
+        objeto.mostrarCadena.add(tipoVariable);
+        objeto.contadorErrores++;
+    }
+    return objeto;
+   }
+   
+   private funcionesMenu ValidacionNumeros(funcionesMenu objeto, float Numero, String tipoVariable, String Titulo) {
+    try {
+        if (Numero < 0 || Numero > 5) {
+            objeto.mostrarCadena.add(tipoVariable);
+            objeto.contadorErrores++;
+        }
+    } catch (NumberFormatException | NullPointerException e) {
+        objeto.mostrarCadena.add(tipoVariable);
+        objeto.contadorErrores++;
+    }
+    return objeto;
+   }
     
-private Registro ManipulacionDatos(String Titulo) {
+   
+   private Registro ManipulacionDatos(String Titulo) {
         
         Registro DatoAlumno=new Registro();
-        ArrayList<String> Mensaje;
-        int ContadorCasos;
         boolean EstadoNotas;
         boolean EstadoStrings;
+        funcionesMenu objetoValidar=new funcionesMenu();
         
         do {
+            objetoValidar.mostrarCadena=new ArrayList<>();
             EstadoStrings = true;
-            try {
-                Mensaje=new ArrayList<>();
-                        
-                DatoAlumno.setId(JOptionPane.showInputDialog(null, "\nDigite C.C o D.I del alumno.", Titulo, 0));
-                DatoAlumno.setNombr(JOptionPane.showInputDialog(null, "\nDigite nombre del alumno.", Titulo, 0));
-                DatoAlumno.setApel(JOptionPane.showInputDialog(null, "\nDigite apellido del alumno.", Titulo, 0));
-                        
-                if(DatoAlumno.getId() == null || DatoAlumno.getId().isBlank()) {
-                    Mensaje.add("Identificación");
-                    EstadoStrings = false;
-                }
-                if(DatoAlumno.getNombr() == null || DatoAlumno.getNombr().isBlank()) {
-                    Mensaje.add("Nombre");
-                    EstadoStrings = false;
-                } 
-                if(DatoAlumno.getApel() == null || DatoAlumno.getApel().isBlank()) {
-                    Mensaje.add("Apellido");
-                    EstadoStrings = false;
-                }
-                if (EstadoStrings == false) {
-                    JOptionPane.showMessageDialog(null, "Las siguientes casillas se encuentran vacías: " + Mensaje + ". Por favor intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
-                }
-            } catch (NullPointerException e) {
-                JOptionPane.showMessageDialog(null, "Error. No se permiten datos nulos. Intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
-                EstadoStrings = false;
+            objetoValidar.contadorErrores = 0;
+            
+            DatoAlumno.setId(JOptionPane.showInputDialog(null, "\nDigite C.C o D.I del alumno.", Titulo, 0));
+            DatoAlumno.setNombr(JOptionPane.showInputDialog(null, "\nDigite nombre del alumno.", Titulo, 0));
+            DatoAlumno.setApel(JOptionPane.showInputDialog(null, "\nDigite apellido del alumno.", Titulo, 0));
+                
+            objetoValidar = ValidacionStrings(objetoValidar, DatoAlumno.getId(), "Identificación", Titulo);
+            objetoValidar = ValidacionStrings(objetoValidar, DatoAlumno.getNombr(), "Nombre", Titulo);
+            objetoValidar = ValidacionStrings(objetoValidar, DatoAlumno.getApel(), "Apellido", Titulo);
+
+            if (objetoValidar.contadorErrores>0) {
+                EstadoStrings = false; 
+                JOptionPane.showMessageDialog(null, "Las siguientes casillas se encuentran vacías: " + objetoValidar.mostrarCadena + ". Por favor intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
             }
                         
         } while(EstadoStrings == false);
         
         do {
+            objetoValidar.mostrarCadena=new ArrayList<>();
+            objetoValidar.contadorErrores = 0;
             EstadoNotas = true;
             try {
-                ContadorCasos = 0;
-                Mensaje = new ArrayList<>();
- 
                 DatoAlumno.setNotas(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °1 del alumno.", Titulo, 0))
-                    , Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °2 del alumno.", Titulo, 0))
-                    , Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °3 del alumno.", Titulo, 0)));
-
-                DatoAlumno.setProm((float) ((0.3*(DatoAlumno.getNot1()+DatoAlumno.getNot2()))+(0.4*DatoAlumno.getNot3())));
-                
-                if(DatoAlumno.getNot1() < 0) {
-                    Mensaje.add("Nota °1");
-                    EstadoNotas = false;
-                }
-                if(DatoAlumno.getNot2() < 0) {
-                    Mensaje.add("Nota °2");
-                    EstadoNotas = false;
-                } 
-                if(DatoAlumno.getNot3() < 0) {
-                    Mensaje.add("Nota °3");
-                    EstadoNotas = false;
-                }
-                if (EstadoNotas == false) {
-                    JOptionPane.showMessageDialog(null, "Las siguientes casillas tienen valores negativos: " + Mensaje + ". Por favor intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
-                }
+                , Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °2 del alumno.", Titulo, 0))
+                , Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °3 del alumno.", Titulo, 0)));
             } catch (NumberFormatException | NullPointerException e) {
-                JOptionPane.showMessageDialog(null, "Error de entrada para la nota. Intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
                 EstadoNotas = false;
+                JOptionPane.showMessageDialog(null, "Error. No se permiten valores alfanuméricos o nulos. Por favor intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
+            }
+                
+            if (EstadoNotas != false) {
+                objetoValidar = ValidacionNumeros(objetoValidar, DatoAlumno.getNot1(), "Nota °1", Titulo);
+                objetoValidar = ValidacionNumeros(objetoValidar, DatoAlumno.getNot2(), "Nota °2", Titulo);
+                objetoValidar = ValidacionNumeros(objetoValidar, DatoAlumno.getNot3(), "Nota °3", Titulo);
+                
+                if (objetoValidar.contadorErrores > 0) {
+                    JOptionPane.showMessageDialog(null, "Las siguientes notas: " + objetoValidar.mostrarCadena + " están fuera de rango (0pts a 5pts). Por favor intente de nuevo.", Titulo, JOptionPane.WARNING_MESSAGE);
+                    EstadoNotas = false;
+                } else {
+                    DatoAlumno.setProm((float) ((0.3*(DatoAlumno.getNot1()+DatoAlumno.getNot2()))+(0.4*DatoAlumno.getNot3())));
+                }
             }
         } while(EstadoNotas == false);
         
@@ -150,35 +126,19 @@ private Registro ManipulacionDatos(String Titulo) {
             
     }
 
-public void capturar_datos(ArrayList<Registro> alumnos) {
+   public void capturar_datos(ArrayList<Registro> alumnos) {
         
         do {
-            
             Registro x=new Registro();
-            
             alumnos.add(ManipulacionDatos("Captura de Datos"));
-            
             RespuestaGeneral=JOptionPane.showConfirmDialog(null, "¿Desea seguir suministrando Informacion?", "Confirmar", JOptionPane.YES_NO_OPTION);
         } while (RespuestaGeneral == JOptionPane.YES_OPTION);
         JOptionPane.showMessageDialog(null, "Proceso finalizado.");
     }
     
 
-boolean ValidacionStrings(String cadena) {
-    try {
-        if (cadena.isBlank()) {
-            JOptionPane.showMessageDialog(null, "No debe dejar esta casilla en blanco. Por favor intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
-            return false;
-        } else {
-            return true;
-        }
-    } catch (NullPointerException e) {
-        JOptionPane.showMessageDialog(null, "No debe dejar esta casilla en vacía. Por favor intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
-        return false;
-    }
-}
 
-public void actualizar(ArrayList<Registro> alumnos) {
+   public void actualizar(ArrayList<Registro> alumnos) {
 
     int Posicion_Actualizar = -1;
     Registro x=new Registro();
@@ -192,48 +152,37 @@ public void actualizar(ArrayList<Registro> alumnos) {
         if (RespuestaGeneral == JOptionPane.YES_OPTION) {
             
             int Respuesta;
-            int Respuesta_Calculo;
             int Opcion_Datos;
             boolean estado;
-            boolean CambiarPromedioAuto;
+            boolean CambiarPromedioAuto = true;
             boolean EstadoStrings;
             String datoTemporal;
+            funcionesMenu objetoValidar;
             
             do {
                 estado = true;
                 Opcion_Datos = -1;
                 Opcion_Datos=Integer.parseInt(JOptionPane.showInputDialog("¿Qué datos desea actualizar?\n1. Código\n2. Nombre\n3. Apellido\n4. Nota °1\n5. Nota °2\n6. Nota °3\n7. Promedio Académico\n8. Salir"));
-                
+                objetoValidar=new funcionesMenu();
                 do {
+                    objetoValidar.contadorErrores = 0;
+                    objetoValidar.mostrarCadena = new ArrayList<>();
                     EstadoStrings = true;
                     try {
                         switch(Opcion_Datos) {
 
-                            case 1:
-                                datoTemporal = x.getId();
-                                x.setId(JOptionPane.showInputDialog(null, "\nDigite C.C o D.I del alumno.", "Captura de datos del Estudiante", 0));
-                                estado = ValidacionStrings(x.getId());
-                                if (estado == false) {
-                                    x.setId(datoTemporal);
-                                }
-                                break;
-                    
-                            case 2: 
-                                datoTemporal = x.getNombr();
-                               x.setNombr(JOptionPane.showInputDialog(null, "\nDigite nombre del alumno.", "Captura de datos del Estudiante", 0));
-                               estado = ValidacionStrings(x.getNombr());
-                               if (estado == false) {
-                                    x.setNombr(datoTemporal);
-                                }
-                               break;
-                            case 3: 
-                                datoTemporal = x.getApel();
-                                x.setApel(JOptionPane.showInputDialog(null, "\nDigite apellido del alumno.", "Captura de datos del Estudiante", 0));
-                                estado = ValidacionStrings(x.getApel());
-                                if (estado == false) {
-                                    x.setApel(datoTemporal);
-                                }
-                        break;
+                            case 1 -> x.setId(JOptionPane.showInputDialog(null, "\nDigite C.C o D.I del alumno.", "Captura de datos del Estudiante", 0));
+                            case 2 -> x.setNombr(JOptionPane.showInputDialog(null, "\nDigite nombre del alumno.", "Captura de datos del Estudiante", 0));
+                            case 3 -> x.setApel(JOptionPane.showInputDialog(null, "\nDigite apellido del alumno.", "Captura de datos del Estudiante", 0));
+                        }
+                        
+                        objetoValidar = ValidacionStrings(objetoValidar, x.getId(), "Identificación", "Actualización de Datos");
+                        objetoValidar = ValidacionStrings(objetoValidar, x.getNombr(), "Nombre", "Actualización de Datos");
+                        objetoValidar = ValidacionStrings(objetoValidar, x.getApel(), "Apellido", "Actualización de Datos");
+                            
+                        if (objetoValidar.contadorErrores > 0) {
+                            JOptionPane.showMessageDialog(null, "La siguiente casilla: " + objetoValidar.mostrarCadena + " se encuentra vacía o nula. Por favor ingrésela nuevamente.", "Actualización de Datos", JOptionPane.WARNING_MESSAGE);
+                            EstadoStrings = false;
                         }
 
                     } catch (NullPointerException e) {
@@ -246,51 +195,43 @@ public void actualizar(ArrayList<Registro> alumnos) {
                 if (Opcion_Datos >3) {
                     Opcion_Datos-=3;
                     do {
+                        objetoValidar.contadorErrores = 0;
+                        objetoValidar.mostrarCadena = new ArrayList<>();
                         estado = true; 
-                        CambiarPromedioAuto = true;
                         try {
                             switch(Opcion_Datos) {
-                                case 1: 
-                                    x.setNot1(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °1 del alumno.", "Captura de datos del Estudiante", 0)));
-                                    break;   
-                                case 2: 
-                                    x.setNot2(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °2 del alumno.", "Captura de datos del Estudiante", 0)));
-                                    break;
-                                case 3: 
-                                    x.setNot3(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °3 del alumno.", "Captura de datos del Estudiante", 0)));
-                                    break;
-                                case 4:
-                                    x.setProm(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite el promedio académico del alumno.", "Captura de datos del Estudiante", 0)));
-                                    CambiarPromedioAuto = false;
-                                    break;
-                                case 5:
-                                    break;
-                                default:
-                                    JOptionPane.showMessageDialog(null, "Opción inválida. Intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
-                                    break;
-                            }
-                            
-                            if (CambiarPromedioAuto == true) {
-                                x.setProm((float) ((0.3*(x.getNot1()+x.getNot2()))+(0.4*x.getNot3())));
-                            }
-                            
-                            if (x.getId() == null || x.getId().isBlank()) {
-                                JOptionPane.showMessageDialog(null, "No debe dejar en blanco esta casilla. Por favor intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
-                                estado = false;
-                            }
-                            if (x.getNombr() == null || x.getNombr().isBlank()) {
-                                JOptionPane.showMessageDialog(null, "No debe usar valores negativos para las notas. Por favor intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
-                                estado = false;
-                            }
-                            if (x.getApel() == null || x.getApel().isBlank()) {
-                                JOptionPane.showMessageDialog(null, "No debe usar valores negativos para las notas. Por favor intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
-                                estado = false;
+                                case 1 -> x.setNot1(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °1 del alumno.", "Captura de datos del Estudiante", 0)));
+                                case 2 -> x.setNot2(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °2 del alumno.", "Captura de datos del Estudiante", 0)));
+                                case 3 -> x.setNot3(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite nota °3 del alumno.", "Captura de datos del Estudiante", 0)));
+                                case 4 -> {
+                                    int RespuestaPromedio;
+                                    Respuesta=JOptionPane.showConfirmDialog(null, "¿Desea calcular el promedio en automático?", "Actualización de Datos", JOptionPane.YES_NO_OPTION);
+                                    if (Respuesta != JOptionPane.YES_OPTION) {
+                                        x.setProm(Float.parseFloat(JOptionPane.showInputDialog(null, "\nDigite el promedio académico del alumno.", "Captura de datos del Estudiante", 0)));
+                                        CambiarPromedioAuto = false;
+                                    } else {
+                                        CambiarPromedioAuto = true;
+                                    }
+                                }
+                                case 5 -> {
+                                }
+                                default -> JOptionPane.showMessageDialog(null, "Opción inválida. Intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
                             }
                 
-                            if(x.getNot1() < 0 || x.getNot2() < 0 || x.getNot3() < 0) {
-                                JOptionPane.showMessageDialog(null, "No debe usar valores negativos para las notas. Por favor intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
+                            objetoValidar = ValidacionNumeros(objetoValidar, x.getNot1(), "Nota °1", "Actualización de Datos");
+                            objetoValidar = ValidacionNumeros(objetoValidar, x.getNot2(), "Nota °2", "Actualización de Datos");
+                            objetoValidar = ValidacionNumeros(objetoValidar, x.getNot3(), "Nota °3", "Actualización de Datos");
+                            objetoValidar = ValidacionNumeros(objetoValidar, x.getProm(), "Nota °3", "Actualización de Datos");
+                            
+                            if (objetoValidar.contadorErrores > 0) {
+                                JOptionPane.showMessageDialog(null, "La siguiente nota: " + objetoValidar.mostrarCadena + " están fuera de rango (0pts a 5pts). Por favor intente de nuevo.", "Actualización de Datos", JOptionPane.WARNING_MESSAGE);
                                 estado = false;
+                            } else {
+                                if (CambiarPromedioAuto == true) {
+                                    x.setProm((float) ((0.3*(x.getNot1()+x.getNot2()))+(0.4*x.getNot3())));
+                                }
                             }
+                            
                         } catch (NumberFormatException e) {
                             JOptionPane.showMessageDialog(null, "Error. No se permiten datos alfanuméricos para las notas. Intente de nuevo.", "Acutalización de Datos", JOptionPane.WARNING_MESSAGE);
                             estado = false;
@@ -308,7 +249,7 @@ public void actualizar(ArrayList<Registro> alumnos) {
     }
 }
 
-public void borrar(ArrayList<Registro> alumnos) {
+   public void borrar(ArrayList<Registro> alumnos) {
     int PosicionBorrar = -1;
 
     PosicionBorrar = consultar(alumnos);
@@ -329,54 +270,58 @@ public void borrar(ArrayList<Registro> alumnos) {
 
 
 
-public void informe(ArrayList<Registro> alumnos) {
-        if (!alumnos.isEmpty()) {
-            StringBuilder mostrar=new StringBuilder();
+   public void informe(ArrayList<Registro> ListaAlumnos) {
+       
+       if (ListaAlumnos.isEmpty()) {
+           JOptionPane.showMessageDialog(null, "La base de datos está vacía. Por favor llene los datos antes de consultar.", "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.WARNING_MESSAGE);
+           return;
+        }
+        StringBuilder mostrarLista=new StringBuilder();
         String ver = null;
-        for (Registro x:alumnos) {
-            mostrar.append("__________________________________________________________________________________________\n");
+        for (Registro x:ListaAlumnos) {
+            mostrarLista.append("__________________________________________________________________________________________\n");
             ver=x.mostrar();
-            mostrar.append(ver);
+            mostrarLista.append(ver);
         }
-        JOptionPane.showMessageDialog(null, crearScroll(mostrar), "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.PLAIN_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "La base de datos está vacía. Por favor llene los datos antes de consultar.", "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.WARNING_MESSAGE);
-        }
+        JOptionPane.showMessageDialog(null, crearScroll(mostrarLista), "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.PLAIN_MESSAGE);
     }
     
-public int consultar(ArrayList<Registro> alumnos) {
+   public int consultar(ArrayList<Registro> alumnos) {
 
     String CodigoMatricula;
     int posicion = -1;
     Registro x=new Registro();
+    metodosScroll Panel=new metodosScroll();
+    metodosBusqueda buscarAlumno;
     
-    if (!alumnos.isEmpty()) {
-        RespuestaGeneral = JOptionPane.showConfirmDialog(null, " **** CONSULTA INFORMACION DE ESTUDIANTES ****" + "\n¿Desea consultar al estudiante por índice?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (RespuestaGeneral == JOptionPane.YES_OPTION) {
-            do {
-                try {
-                    posicion=Integer.parseInt(JOptionPane.showInputDialog(null, "\nIngrese el índice del estudiante a consultar.", "CONSULTA INFORMACION DE ESTUDIANTES", 0));
-                    x=alumnos.get(posicion);
-                    JOptionPane.showMessageDialog(null, crearScroll(x.mostrar()), "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.PLAIN_MESSAGE);
-                } catch (IndexOutOfBoundsException e) {
-                    JOptionPane.showMessageDialog(null, "Error. Posición fuera de rango. Intente de nuevo.", "CONSULTA INFORMACION DE ESTUDIANTES", JOptionPane.WARNING_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Error. No se permiten datos alfanuméricos. Intente de nuevo.", "CONSULTA INFORMACION DE ESTUDIANTES", JOptionPane.WARNING_MESSAGE);
-                }
-            } while (posicion <0 || posicion >= alumnos.size());
-        } else {
-            CodigoMatricula=JOptionPane.showInputDialog(null, "\nIngrese código del estudiante a consultar.", "CONSULTA INFORMACION DE ESTUDIANTES", 0);
-            posicion = busqueda(CodigoMatricula, alumnos);
-            if (posicion != -1) { 
+    if (alumnos.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "La base de datos está vacía. Por favor llene los datos antes de consultar.", "Sistema de Datos de Estudiantes", JOptionPane.WARNING_MESSAGE);
+        return posicion = -1;
+    }
+    RespuestaGeneral = JOptionPane.showConfirmDialog(null, "\n¿Desea consultar al estudiante por índice?", "Consulta de Información de Estudiantes", JOptionPane.YES_NO_OPTION);
+    if (RespuestaGeneral == JOptionPane.YES_OPTION) {
+        do {
+            try {
+                posicion=Integer.parseInt(JOptionPane.showInputDialog(null, "\nIngrese el índice del estudiante a consultar.", "Consulta de Información de Estudiantes", 0));
                 x=alumnos.get(posicion);
-                JOptionPane.showMessageDialog(null, crearScroll(x.mostrar()), "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.OK_OPTION);      
-            } else {
-                JOptionPane.showMessageDialog(null, "NO esta matriculado ese alumno...");
+                JOptionPane.showMessageDialog(null, Panel.crearScroll(x.mostrar()), "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.PLAIN_MESSAGE);
+            } catch (IndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(null, "Error. Posición fuera de rango. Intente de nuevo.", "Consulta de Información de Estudiantes", JOptionPane.WARNING_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error. No se permiten datos alfanuméricos. Intente de nuevo.", "Consulta de Información de Estudiantes", JOptionPane.WARNING_MESSAGE);
             }
-        }
+        } while (posicion <0 || posicion >= alumnos.size());
     } else {
-        JOptionPane.showMessageDialog(null, "La base de datos está vacía. Por favor llene los datos antes de consultar.", "SISTEMA DATOS DE ESTUDIANTES", JOptionPane.WARNING_MESSAGE);
-    } 
+        CodigoMatricula=JOptionPane.showInputDialog(null, "\nIngrese código del estudiante a consultar.", "Consulta de Información de Estudiantes", 0);
+        buscarAlumno=new metodosBusqueda(CodigoMatricula, alumnos);
+        posicion = buscarAlumno.getPosicion();
+        if (posicion != -1) { 
+            x=alumnos.get(posicion);
+            JOptionPane.showMessageDialog(null, Panel.crearScroll(x.mostrar()), "Sistema de Datos de Estudiantes", JOptionPane.OK_OPTION);      
+        } else {
+            JOptionPane.showMessageDialog(null, "Este alumno NO está en la lista de registrados.");
+        }
+    }
 
     return posicion;
 }
