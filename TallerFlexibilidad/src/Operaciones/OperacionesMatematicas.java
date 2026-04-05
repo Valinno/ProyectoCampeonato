@@ -4,7 +4,6 @@
  */
 package Operaciones;
 
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,6 +21,7 @@ public class OperacionesMatematicas {
     
     public OperacionesMatematicas(){}
     
+    // Metodo constructor para la tabla de multiplicar de un numero real
     public OperacionesMatematicas(float n){
     
         JTextArea textoMultiplicacion=new JTextArea(30,20);
@@ -30,29 +30,28 @@ public class OperacionesMatematicas {
         String Num = null;
         float Resultado = 0;
         OperacionesMatematicas objeto=new OperacionesMatematicas();
-        try {
-            Num = JOptionPane.showInputDialog(null, "¿Hasta qué número n desea multiplicar?", "Multiplicación de Números", JOptionPane.INFORMATION_MESSAGE);
-            if (objeto.ConfirmarEntero(Num) == true) {
-                if (Integer.parseInt(Num)<0) {
-                    for (int i = 1; i >= Integer.parseInt(Num); i--) {
-                        Resultado = n*Float.valueOf(i);
-                        TablaMultiplicarReales.append(n).append(" x ").append(i).append(" = ").append(Resultado).append("\n\n");
-                    }
-                } else {
-                    for (int i = 1; i <= Integer.parseInt(Num); i++) {
-                        Resultado = n*Float.valueOf(i);
-                        TablaMultiplicarReales.append(n).append(" x ").append(i).append(" = ").append(Resultado).append("\n\n");
-                    }
+        Num = JOptionPane.showInputDialog(null, "¿Hasta qué número n desea multiplicar?", "Multiplicación de Números", JOptionPane.INFORMATION_MESSAGE);
+        if (objeto.ConfirmarEntero(Num) == true) {
+            if (Integer.parseInt(Num)<0) {
+                for (int i = 0; i >= Integer.parseInt(Num); i--) {
+                     Resultado = n*Float.valueOf(i);
+                     TablaMultiplicarReales.append(n).append(" x ").append(i).append(" = ").append(Resultado).append("\n\n");
                 }
-                textoMultiplicacion.setText(TablaMultiplicarReales.toString());
-                JOptionPane.showMessageDialog(null, scroll, "Tabla de Multiplicación", JOptionPane.PLAIN_MESSAGE);
-            } 
-        } catch (NumberFormatException | NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Error. Solo se permiten valores sucesivos de n enteros. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
-            
+            } else {
+                for (int i = 0; i <= Integer.parseInt(Num); i++) {
+                    Resultado = n*Float.valueOf(i);
+                    TablaMultiplicarReales.append(n).append(" x ").append(i).append(" = ").append(Resultado).append("\n\n");
+                }
+            }
+            textoMultiplicacion.setText(TablaMultiplicarReales.toString());
+            JOptionPane.showMessageDialog(null, scroll, "Tabla de Multiplicación", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al validar. Intente de nuevo.", "Multiplicación de Números", JOptionPane.WARNING_MESSAGE);
         }
     
     }
+    
+    // Metodo constructor para la tabla de multiplicar de un numero entero
     public OperacionesMatematicas(int n){
         JTextArea textoMultiplicacion=new JTextArea(30,20);
         JScrollPane scroll=new JScrollPane(textoMultiplicacion);
@@ -61,11 +60,11 @@ public class OperacionesMatematicas {
         try {
             Num = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Hasta qué número n desea multiplicar?", "Multiplicación de Números", JOptionPane.INFORMATION_MESSAGE));
             if (Num<0) {
-                for (int i = 1; i >= Num; i--) {
+                for (int i = 0; i >= Num; i--) {
                     TablaMultiplicarEnteros.append(n).append(" x ").append(i).append(" = ").append(n*i).append("\n\n");
             }
             } else {
-                for (int i = 1; i <= Num; i++) {
+                for (int i = 0; i <= Num; i++) {
                     TablaMultiplicarEnteros.append(n).append(" x ").append(i).append(" = ").append(n*i).append("\n\n");
                 }
             }
@@ -76,6 +75,8 @@ public class OperacionesMatematicas {
         }
     
     }
+    
+    // Metodo constructor para la tabla de exponentes de un numero real
     public OperacionesMatematicas(int n, String Tipo){
         
         JTextArea textoExponentes=new JTextArea(30,20);
@@ -95,11 +96,15 @@ public class OperacionesMatematicas {
             }
             textoExponentes.setText(TablaExponentesEnteros.toString());
             JOptionPane.showMessageDialog(null, scroll, "Tabla de Exponentes", JOptionPane.PLAIN_MESSAGE);
-        } catch (NumberFormatException | NullPointerException e) {
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error. Solo se permiten valores de exponentes enteros. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Error al validar. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
         }
         
     }
+    
+    // Metodo constructor para la tabla de exponentes de un numero entero
     public OperacionesMatematicas(String Tipo, float n){
         JTextArea textoExponentes=new JTextArea(30,20);
         JScrollPane scroll=new JScrollPane(textoExponentes);
@@ -118,12 +123,15 @@ public class OperacionesMatematicas {
             }
             textoExponentes.setText(TablaExponentesReales.toString());
             JOptionPane.showMessageDialog(null, scroll, "Tabla de Exponentes", JOptionPane.PLAIN_MESSAGE);
-        } catch (NumberFormatException | NullPointerException e) {
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error. Solo se permiten valores de exponentes enteros. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Error al validar. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
         }
         
     }
     
+    // Metodo constructor para la tabla de sumatoria con numeros enteros
     public OperacionesMatematicas(String Tipo, int n){
         
         JTextArea textoSumatoria=new JTextArea(30, 40);
@@ -133,22 +141,24 @@ public class OperacionesMatematicas {
         int Num;
         int val = 0;
         try {
-            Num = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Hasta qué número n desea realizar la sumatoria x+n de " + n + "?", Tipo + "Sumatoria de Números "+Tipo, JOptionPane.INFORMATION_MESSAGE));
-            if (Num<0 && n<0) {
-                Num=Math.abs(Num*2);
-            }
+            Num = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Hasta qué número n desea realizar la sumatoria (x+n-1)+(x+n) de " + n + "?", Tipo + "Sumatoria de Números "+Tipo, JOptionPane.INFORMATION_MESSAGE));
+
             if (Num<0) {
                 for (int i = n; i >= Num; i--) {
                     val+=n+i;
                     conversor.append(n).append(" + (").append(i).append(") = ").append(val).append("\n");
                 }
             } else {
+                int j = 0;
                 for (int i = n; i <= Num; i++) {
+                    if (i>n) {
+                        j+=n+i-1;
+                    }
                     val+=n+i;
                     if (i<0) {
-                        conversor.append(n).append(" + (").append(i).append(") = ").append(val).append("\n");
+                        conversor.append(j).append(" + (").append(n+i).append(") = ").append(val).append("\n");
                     } else {
-                        conversor.append(n).append(" + ").append(i).append(" = ").append(val).append("\n");
+                        conversor.append(j).append(" + ").append(n+i).append(" = ").append(val).append("\n");
                     }
 
                 }
@@ -156,26 +166,31 @@ public class OperacionesMatematicas {
             TablaSumatoria = conversor.toString();
             textoSumatoria.setText(TablaSumatoria);
             JOptionPane.showMessageDialog(null, scroll, "Tabla de Sumatoria", JOptionPane.PLAIN_MESSAGE);
-        } catch (NumberFormatException | NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Error. Solo se permiten valores de n enteros. Intente de nuevo", "Tabla de " + Tipo, JOptionPane.WARNING_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error. Solo se permiten valores de n enteros. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Error al validar. Intente de nuevo", "Tabla de Exponentes", JOptionPane.WARNING_MESSAGE);
         }
         
     }
     
+    // Metodo de validación de numeros enteros
     boolean ConfirmarEntero(String Num) {
         try {
             Integer.valueOf(Num);
             return true;
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El número no es entero. Intente de nuevo.", "Error", JOptionPane.WARNING_MESSAGE);
             return false;
         }
     }
     
-    boolean MenuSucesiones(String Num, boolean tipoDato){
+    // Menú sin retorno con las cuatro opciones incluyendo salida
+    void MenuSucesiones(String Num, boolean tipoDato){
         
+        // Objeto para llamar metodos para operaciones matemáticas en cada caso
         OperacionesMatematicas objetoFunciones;
         int OpcionesMenu;
+        // bool para iterar el menú hasta la opcion salida
         boolean checkEstado;
         boolean MenuActivo = true;
         boolean SalirMenu = false;
@@ -193,6 +208,8 @@ public class OperacionesMatematicas {
                                objetoFunciones=new OperacionesMatematicas(Integer.parseInt(Num));
                            }
                            break;
+                           
+                           // Sumatorio solo para enteros
                        case 2:
                            if (!tipoDato) {
                                JOptionPane.showMessageDialog(null, "Esta sección solo está disponible para números enteros.", "Tabla de Multiplicación", JOptionPane.PLAIN_MESSAGE);
@@ -221,12 +238,11 @@ public class OperacionesMatematicas {
                            break;
                    }
                } catch (NumberFormatException | NullPointerException e) {
-                   JOptionPane.showMessageDialog(null, "Valor no válido. Por favor intente nuevamente.");
+                   JOptionPane.showMessageDialog(null, "Error al validar. Por favor intente nuevamente.");
                    checkEstado = false;
                }
            } while (checkEstado == false); 
         }while(MenuActivo == true); 
-        return true;
     }
     
     public static void main(String[] args) {
@@ -238,41 +254,50 @@ public class OperacionesMatematicas {
         boolean checkEstado;
         StringBuilder NumeroString;
         String conversor;
+        // bool para iterar el menú de elección entre conjuntos de numeros
         boolean SistemaActivo = true;
+        
         
         do {
             Indice = JOptionPane.showOptionDialog(null, "¿Con qué número desea trabajar?", "Elegir Número", 0, 0, null, Opciones, Opciones[0]);
             NumeroString=new StringBuilder();
             switch(Indice) {
+                // Para elegir numero real
                 case 0:
                     do {
                         checkEstado = true;
                         try {
                             ob.NumeroReal = Float.parseFloat(JOptionPane.showInputDialog(null, "Ingrese un numero.", "Numeros Reales", JOptionPane.QUESTION_MESSAGE));
                         } catch (NumberFormatException | NullPointerException e) {
-                            JOptionPane.showMessageDialog(null, "Valor no válido. Por favor intente nuevamente.");
+                            JOptionPane.showMessageDialog(null, "Error al validar. Por favor intente nuevamente.");
                             checkEstado = false;
                         }
                     } while (checkEstado == false);
+                    
+                    // Conversion a cadena mediante StringBuilder para facilitar la validacion de numeros enteros
                     NumeroString.append(ob.NumeroReal);
                     conversor = NumeroString.toString();
-                    SistemaActivo = ob.MenuSucesiones(conversor, ob.ConfirmarEntero(conversor));
+                    ob.MenuSucesiones(conversor, ob.ConfirmarEntero(conversor));
                     break;
-                    
+                 // Para elegir numero entero  
                 case 1:
                     do {
                         checkEstado = true;
                         try {
                             ob.Numero = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese un numero.", "Numeros Enteros", JOptionPane.QUESTION_MESSAGE));
                         } catch (NumberFormatException | NullPointerException e) {
-                            JOptionPane.showMessageDialog(null, "Valor no válido. Por favor intente nuevamente.");
+                            JOptionPane.showMessageDialog(null, "Error al validar. Por favor intente nuevamente.");
                             checkEstado = false;
                         }
                     } while (checkEstado == false);
+                    
+                    // Conversion a cadena mediante StringBuilder para facilitar la validacion de numeros enteros
                     NumeroString.append(ob.Numero);
                     conversor = NumeroString.toString();
-                    SistemaActivo = ob.MenuSucesiones(conversor, ob.ConfirmarEntero(conversor));
+                    ob.MenuSucesiones(conversor, ob.ConfirmarEntero(conversor));
                     break;
+                
+                // Salida
                 case 2:
                     int Respuesta;
                     Respuesta = JOptionPane.showConfirmDialog(null, "¿Realmente desea salir del sistema?", "Confirmar", JOptionPane.YES_NO_OPTION);

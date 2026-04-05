@@ -33,29 +33,25 @@ public class Validaciones {
     
     public Validaciones(){}
     
-       protected Validaciones ValidacionString(String cadena, String tipoVariable, String Titulo) {
-    try {
-        if (cadena.isBlank()) {
+    protected Validaciones ValidacionString(String cadena, String tipoVariable, String Titulo) {
+        if (cadena == null || cadena.isBlank()) {
             this.DatosLista.add(tipoVariable);
             this.contadorErrores++;
         }
-    } catch (NullPointerException e) {
-        this.DatosLista.add(tipoVariable);
-        this.contadorErrores++;
+
+        return this;
     }
-    return this;
-   }
    
-   protected  Validaciones ValidacionNumeros(float Numero, String tipoVariable, String Titulo) {
-    try {
+    protected  Validaciones ValidacionNumeros(float Numero, String tipoVariable, String Titulo) {
+        try {
         if (Numero < 0 || Numero > 5) {
             this.DatosLista.add(tipoVariable);
             this.contadorErrores++;
         }
-    } catch (NumberFormatException | NullPointerException e) {
-        this.DatosLista.add(tipoVariable);
-        this.contadorErrores++;
+        } catch (NumberFormatException e) {
+            this.DatosLista.add(tipoVariable);
+            this.contadorErrores++;
+        }
+        return this;
     }
-    return this;
-   }
 }

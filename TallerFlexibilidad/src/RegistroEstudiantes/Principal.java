@@ -32,6 +32,7 @@ public static void main(String[] args) {
                 + "\t5. Borrar Datos \n"
                 + "\t6. Salir del Sistema \n" + " ", "MENU DE GESTIÓN DE DATOS ACADÉMICOS", JOptionPane.DEFAULT_OPTION)); 
             } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Opción no valida. Intente de nuevo", "MENÚ DE GESTIÓN DE DATOS ACADÉMICOS", JOptionPane.WARNING_MESSAGE);
             }
             
         } while (op<=0 || op>6);
@@ -40,21 +41,16 @@ public static void main(String[] args) {
         case 1 -> displ.capturar_datos(alumnos);
         case 2 -> displ.informe(alumnos);
         case 3 -> displ.consultar(alumnos);
-        case 4 -> {try {
-                displ.actualizar(alumnos);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Opción no válida. Será regresado al menú.", "Actualización de Datos", JOptionPane.WARNING_MESSAGE);
-            }
-}
+        case 4 -> displ.actualizar(alumnos);
         case 5 -> displ.borrar(alumnos);
         case 6 -> { 
-            Respuesta = JOptionPane.showConfirmDialog(null, "¿Realmente desea salir del sistema?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            Respuesta = JOptionPane.showConfirmDialog(null, "¿Realmente desea salir del sistema?", "MENÚ DE GESTIÓN DE DATOS ACADÉMICOS", JOptionPane.YES_NO_OPTION);
             if (Respuesta == JOptionPane.YES_OPTION) {
                 JOptionPane.showMessageDialog(null, "Saliendo...");
                 activo = false;
             }
             }
-        default -> JOptionPane.showMessageDialog(null, "Entrada no valida.");
+        default -> JOptionPane.showMessageDialog(null, "Entrada no valida.", "MENÚ DE GESTIÓN DE DATOS ACADÉMICOS", JOptionPane.WARNING_MESSAGE);
     }
     } while (activo==true);
 }
